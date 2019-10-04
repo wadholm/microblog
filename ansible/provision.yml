@@ -1,0 +1,11 @@
+# Provision servers on AWS
+---
+    -   hosts: local
+        connection: local # Keep ansible from open ssh connection
+        gather_facts: False
+        roles:
+            -   provision
+        vars_files:
+            - aws_keys.yml
+        vars:
+            ansible_python_interpreter: "{{ ansible_playbook_python }}" 

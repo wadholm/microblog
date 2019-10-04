@@ -1,0 +1,102 @@
+---
+-   name: Launch the new EC2 Instance
+    ec2:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+        group: "{{ item.security_group }}"
+        instance_type: "{{ item.instance_type }}"
+        instance_tags: "{{ item.instance_tags }}"
+        image: "{{ image }}"
+        wait: yes
+        region: "{{ region }}"
+        keypair: "{{ keypair }}"
+        count: 1
+        # exact_count: "{{item.count}}"
+        # count_tag: "{{ item.instance_tags }}"
+        state: present
+        # instance_ids: "{{ item.instance_ids }}"
+    loop: "{{ instances }}"
+    register: ec2
+
+# - debug: msg="{{ec2.results}}"
+# - debug: msg="{{ec2.results[0].instances[0].public_ip}}"
+# - debug: var="{{ec2.results[0].instances[0].tags.name}}"
+
+-   name: Allocate ellastic ip to load balancer
+    ec2_eip:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+        device_id: "{{item.instance_ids[0]}}" 
+        state: present
+        # allow_reassociation: yes
+        release_on_disassociation: yes
+        # reuse_existing_ip_allowed: yes
+        # in_vpc: yes
+        region: "{{ region }}"
+    with_items:
+        "{{ec2.results}}"
+    when: item.item.instance_tags.name == "loadBalancer"
+
+
+# -   name: Retrieve domain details from AWS
+#     route53:
+#         aws_access_key: "{{ aws_access_key }}"
+#         aws_secret_key: "{{ aws_secret_key }}"
+#         security_token: "{{ aws_session_token }}"
+#         state: get
+#         zone: "{{ domain_name }}"
+#         record: "{{ item }}"
+#         type: A
+#     with_items:
+#         -   "{{ domain_name}}"
+#         -   "www.{{ domain_name}}"
+#     register: rec
+
+-   ec2_eip_facts:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+        region: "{{ region }}"
+        filters:
+            instance-id: "{{item.instance_ids[0]}}" 
+    with_items:
+        "{{ec2.results}}"
+    when: item.item.instance_tags.name == "loadBalancer"
+    register: eip
+
+-   name: Set LB EIP fact
+    set_fact:
+        lb_eip: "{{item.addresses[0].public_ip}}"
+    with_items: "{{eip.results}}"
+    when: item.addresses is defined
+
+
+-   name: Set domain to ip in AWS (route53)
+    route53:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+        state: present
+        zone: "{{ domain_name }}"
+        record: "{{ item }}"
+        value: "{{lb_eip}}"
+        type: A
+        overwrite: yes
+        wait: yes
+    with_items:
+        -   "{{ domain_name}}"
+        -   "www.{{ domain_name}}"
+
+
+-   name: Wait for SSH to come up
+    wait_for:
+        host: "{{ item.instances.0.public_ip}}"
+        port: 22
+        state: started
+    with_items: "{{ ec2.results}}"
+
+# -   debug: msg="{{rec}}"
+# -   import_tasks: setup_domain.yml
+    # when: 

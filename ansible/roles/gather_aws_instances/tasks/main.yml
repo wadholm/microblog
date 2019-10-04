@@ -1,0 +1,21 @@
+---
+-   name: Gather EC2 facts about running instances
+    ec2_instance_facts:
+        region: us-east-1
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ aws_session_token }}"
+    delegate_to: 127.0.0.1
+    register: ec2_facts
+
+- name: Display Instance types
+  debug: 
+    msg: "{{ ec2_facts.instances }}"
+
+-   name: add created instance to hosts file
+    add_host:
+        name: "{{ item.public_ip_address }}"
+        groups: "{{ item.tags.values() | list }}"
+        # inventory_dir: '{{ inventory_dir }}'
+    with_items: "{{ ec2_facts.instances }}"
+    when: item.public_ip_address is defined and item.state.name == "running"
