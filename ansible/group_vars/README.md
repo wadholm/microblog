@@ -1,5 +1,6 @@
 group_vars
 =======================
+
 In this folder we assign variables to specific host groups. You can read more about it on [Ansible best practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#group-and-host-variables).
 
 In `all.yml` we can assign variables that will be available for all host groups, in other words will always be there.
