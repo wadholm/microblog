@@ -1,2 +1,5 @@
 ---
 # Here you can add variables that will be available for all hosts.
+ansible_python_interpreter: "python3"
+
+domain_name: <domain-name>
