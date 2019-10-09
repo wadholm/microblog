@@ -12,7 +12,7 @@ The `resources` contains config files used by the scripts. Do not change the `<.
 
 2. Clone the git repository and `cd` to the folder.
 
-3. Run script 1-4.
+3. Run script 1-4, from them root folder.
 
 4. Make sure that your domain name is pointed at the server and that the security group/firewall allows https and https traffic.
 

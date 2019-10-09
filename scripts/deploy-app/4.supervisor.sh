@@ -1,3 +1,3 @@
-sudo cp infrastructure-as-code/scripts/resources/supervisor.conf /etc/supervisor/conf.d/redovisa.conf
+sudo cp scripts/deploy-app/resources/supervisor.conf /etc/supervisor/conf.d/microblog.conf
 
 sudo supervisorctl reload
