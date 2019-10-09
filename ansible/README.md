@@ -1,4 +1,5 @@
 Needed to add ssh pub file to ssh agent to ssh, https://stackoverflow.com/a/51500802.
+Use the documentation to find modules and options, https://docs.ansible.com/ansible/latest/, it is surprisingly good.
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html
 ## Ansible vault
 
@@ -33,6 +34,9 @@ ansible_python_interpreter = ../../.venv/bin/python
 [inventory]
 enable_plugins = ini
 ```
+
+Change `private_key_file = <path-to-ssh-pub-file>` to your ssh-key.
+
 
 Needed the following for Ansible to read the `hosts` file (which parser it should use to read the file).
 ```
@@ -87,3 +91,10 @@ File \"/c/Users/aar/git/redovisnings-sida/.venv/lib/python3.5/site-packages/boto
 }
 ```
 https://github.com/boto/boto/issues/2677
+
+
+Add ssh key to ssh agent to not need password!
+```
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/
+```
