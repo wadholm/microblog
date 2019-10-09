@@ -11,10 +11,10 @@ Note! The scripts assume that you have added your ssh key to AWS and created the
 ## Usage
 
 1. Copy this folder to your server with:
-    - `scp -i path-to-keyfile -r 10-first-minutes admin@<ip>:`
+    - `scp -i <path-to-keyfile> -r 10-first-minutes admin@<ip>:`
 
 3. Login to the server:
-    - `ssh -i path-to-keyfile admin@<ip>`
+    - `ssh -i <path-to-keyfile> admin@<ip>`
 
 4. Change to root user with:
     - `sudo su`.
