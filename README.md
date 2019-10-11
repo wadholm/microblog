@@ -83,6 +83,13 @@ flask run
 
 
 
+Production environment
+------------------
+
+Follow the scripts in `scripts/` or [Driftsätta en flask app](https://dbwebb.se/kunskap/driftsatta-en-flask-app).
+
+
+
 License
 -------------------
 
