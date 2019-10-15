@@ -98,3 +98,6 @@ Add ssh key to ssh agent to not need password!
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/
 ```
+
+Try something:
+` ansible -i hosts  -m debug -a msg="{{playbook_dir}}" local`
