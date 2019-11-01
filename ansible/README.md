@@ -1,10 +1,31 @@
-Needed to add ssh pub file to ssh agent to ssh, https://stackoverflow.com/a/51500802.
-Use the documentation to find modules and options, https://docs.ansible.com/ansible/latest/, it is surprisingly good.
-https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html
-## Ansible vault
 
-Add Ansible vault password as ENV variable, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`. 
-I had to run file as bash script for it to work.
+### Documentation
+
+Anisble has surprisingly good [documentation](https://docs.ansible.com/ansible/latest/), use it find new modules and how to use a module.
+
+They also have a [best practice](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) that is good to read.
+
+
+### Credentials
+
+#### ssh-keys
+Without ssh-key files we need to enter the password for out ssh-key everytime we run a task. To avoid this make sure you have added your ssh-key to the ssh-agent.
+
+```
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/aws
+```
+
+#### AWS
+
+You need credentials from AWS to allow Ansible to manage servers. 
+Use the `insert_aws_keys_in_config.sh` script to paste AWS credentials from clipboard into `aws_keys.yml`.
+
+#### Ansible vault
+
+We can use ansible-vault to encrypt files that contain sensitive information. Things we want to push to GitHub but not want them visible.
+
+Create a file with the following content, put it outside of the repo folder. Replace `<password>` with a password.
 ```
 #!/bin/bash
 cat <<EOF
@@ -12,71 +33,82 @@ cat <<EOF
 EOF
 ```
 
-## Dynamic inventory for AWS
-https://docs.ansible.com/ansible/latest/user_guide/intro_dynamic_inventory.html#inventory-script-example-aws-ec2
-
-## AWS credentials
-
-Use `insert_aws_keys_in_config.sh` to paste AWS credentials from clipboard into `aws_keys.yml`.
+Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`.
 
 
+### Configuring Ansible
 
-## ansible.cfg
+We use `ansible.cfg` to configure Ansible.
 
-Config for ansible.
 Example of relevant settings:
+
 ```
 [defaults]
-host_key_checking = False
-private_key_file = <path-to-ssh-pub-file>
-ansible_python_interpreter = ../../.venv/bin/python
+host_key_checking           = False
+private_key_file            = ~/.ssh/aws
+ansible_python_interpreter  = python3
+inventory                   = hosts
 
 [inventory]
-enable_plugins = ini
+enable_plugins              = ini
 ```
 
-Change `private_key_file = <path-to-ssh-pub-file>` to your ssh-key.
+Change `private_key_file = ~/.ssh/aws` to your ssh-key.
 
 
 Needed the following for Ansible to read the `hosts` file (which parser it should use to read the file).
+
 ```
 [inventory]
 enable_plugins = ini
 ```
 
-To be able to run commands locally using venv, the following is needed.
-```
-ansible_python_interpreter = ../../.venv/bin/python
-```
-
-Problems with ssh and ControlSocket/permission denied for cp/ssh, https://stackoverflow.com/a/41698903.
+You might not need the last part of the config. Try running Ansible when removing the following part:
 
 ```
 [ssh_connection]
 ssh_args =
 ```
 
+If you then get an error about "ssh and ControlSocket/permission denied for cp/ssh" add it again. You can read about the problem here, https://stackoverflow.com/a/41698903. There are supposed to be fixes for it but i can't get them to work.
 
-## Run locally
+
+### Run locally
 
 When we want to work against an API, as the AWS modules do, we don't want Ansible to SSH to any server. So we connect to localhost without an ssh connection.
+
 In `hosts` we need:
+
 ```
 [local]
 localhost ansible_connection=local
 ```
-In the playbook:
+
+In the playbook to use the local host:
+
 ```
 -   hosts: local
     connection: local # Keep ansible from open ssh connection
     gather_facts: False
 ```
 
+When we run local plays we also need to change which Python interpreter should be used, to the one in our virtual environment. This is done in `groups_vars/local.yml`. With the line `ansible_python_interpreter: ../venv/bin/python`.
+
+
+### Testing something out
+Sometime you just want to test something, check value of a variable. You can do that with the following:
+
+`ansible -m debug -a msg="{{playbook_dir}}" local`
+
+Just replace `msg=""` with that you want to check.
+
 
 ## Encoding Error
 
+If you get the following error:
+
 ```
-File "/c/Users/aar/git/redovisnings-sida/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py", line 3779, in _make_request
+File "microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py", line 3779, in _make_request
   return json.loads(body)
 File "/usr/lib/python3.5/json/__init__.py", line 312, in loads
   s.__class__.__name__))
@@ -84,20 +116,13 @@ TypeError: the JSON object must be str, not 'bytes'
 
 .......
 
-File \"/c/Users/aar/git/redovisnings-sida/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 1522, in describe_db_instances\n    path='/', params=params)\n  File \"/c/Users/aar/git/redovisnings-sida/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 3779, in _make_request\n    return json.loads(body)\n  File \"/usr/lib/python3.5/json/__init__.py\", line 312, in loads\n    s.__class__.__name__))\nTypeError: the JSON object must be str, not 'bytes'\n",
+File \"microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 1522, in describe_db_instances\n    path='/', params=params)\n  File \"../git/microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 3779, in _make_request\n    return json.loads(body)\n  File \"/usr/lib/python3.5/json/__init__.py\", line 312, in loads\n    s.__class__.__name__))\nTypeError: the JSON object must be str, not 'bytes'\n",
     "module_stdout": "",
     "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
     "rc": 1
 }
 ```
-https://github.com/boto/boto/issues/2677
 
+Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to line 3779 (this can change), look for the line `return json.loads(body)`. Add a new line before that one with `body = response.read().decode('utf-8')`.
 
-Add ssh key to ssh agent to not need password!
-```
-eval $(ssh-agent -s)
-ssh-add ~/.ssh/
-```
-
-Try something:
-` ansible -i hosts  -m debug -a msg="{{playbook_dir}}" local`
+You can read about the error here, https://github.com/boto/boto/issues/2677.

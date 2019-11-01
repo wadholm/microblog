@@ -7,5 +7,3 @@
             -   provision
         vars_files:
             - aws_keys.yml
-        vars:
-            ansible_python_interpreter: "{{ ansible_playbook_python }}" 

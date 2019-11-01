@@ -1,11 +1,10 @@
 ---
-    region: us-east-1
     keypair: aws
     image: ami-0f5c5066b40f2414e
     instances:
       - instance_type: t2.micro
         instance_tags:
-          project: devops
+          project: "{{  project_name  }}"
           name: appServer
         instance_ids:
           - "app-server"
@@ -13,7 +12,7 @@
         count: 1
       - instance_type: t2.micro
         instance_tags:
-          project: devops
+          project: "{{  project_name  }}"
           name: loadBalancer
         instance_ids:
           - "load-balancer"
@@ -21,7 +20,7 @@
         count: 1
       - instance_type: t2.micro
         instance_tags:
-          project: "devops"
+          project: "{{  project_name  }}"
           name: "database"
         instance_ids:
           - "database"

@@ -8,13 +8,17 @@
     delegate_to: 127.0.0.1
     register: ec2_facts
 
-- name: Display Instance types
-  debug: 
-    msg: "{{ ec2_facts.instances }}"
 
--   name: add created instance to hosts file
+
+-   name: add instance to hosts
     add_host:
         name: "{{ item.public_ip_address }}"
         groups: "{{ item.tags.values() | list }}"
     with_items: "{{ ec2_facts.instances }}"
     when: item.public_ip_address is defined and item.state.name == "running"
+
+
+
+- name: Display Instance types
+  debug: 
+    msg: "{{ ec2_facts.instances }}"

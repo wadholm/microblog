@@ -16,7 +16,7 @@
     loop: "{{ instances }}"
     register: ec2
 
-# - debug: msg="{{ec2.results}}"
+
 
 -   name: Allocate ellastic ip to load balancer
     ec2_eip:
@@ -46,11 +46,14 @@
     when: item.item.instance_tags.name == "loadBalancer"
     register: eip
 
+
+
 -   name: Set LB EIP fact
     set_fact:
         lb_eip: "{{item.addresses[0].public_ip}}"
     with_items: "{{eip.results}}"
     when: item.addresses is defined
+
 
 
 -   name: Set domain to LB ip in AWS (route53)

@@ -1,5 +1,4 @@
 ---
-    region: us-east-1
     sg_groups:
         - name: load-balancer
           description: SG for the load balancer
