@@ -6,7 +6,7 @@
         instance_tags:
           project: "{{  project_name  }}"
           name: appServer
-          Name: app-server
+          Name: appServer
         instance_ids:
           - "app-server"
         security_group: app-server
@@ -15,7 +15,7 @@
         instance_tags:
           project: "{{  project_name  }}"
           name: loadBalancer
-          Name: load-balancer
+          Name: loadBalancer
         instance_ids:
           - "load-balancer"
         security_group: load-balancer
