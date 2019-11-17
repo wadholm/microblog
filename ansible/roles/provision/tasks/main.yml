@@ -1,9 +1,6 @@
 ---
 -   name: Launch the new EC2 Instance
     ec2:
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        security_token: "{{ aws_session_token }}"
         group: "{{ item.security_group }}"
         instance_type: "{{ item.instance_type }}"
         instance_tags: "{{ item.instance_tags }}"

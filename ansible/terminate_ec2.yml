@@ -3,8 +3,6 @@
 -   hosts: local
     connection: local
     gather_facts: False
-    vars_files:
-        - aws_keys.yml
     roles:
         - gather_aws_instances
     tasks:
@@ -13,9 +11,6 @@
                 instance_ids: '{{ item.instance_id }}'
                 state: absent
                 region: "{{ region }}"
-                aws_access_key: "{{ aws_access_key }}"
-                aws_secret_key: "{{ aws_secret_key }}"
-                security_token: "{{ aws_session_token }}"
             with_items:
                 "{{ ec2_facts.instances }}"
             when: item.tags.project is defined and item.tags.project == "devops"
