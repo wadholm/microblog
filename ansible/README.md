@@ -9,6 +9,8 @@ They also have a [best practice](https://docs.ansible.com/ansible/latest/user_gu
 
 ### How to run playbooks
 
+First open `provision.yml` and replace `<subnet-id>` with a subnet-id from AWS.
+
 Use the command `ansible-playbook` to run playbooks.
 
 To create servers use `ansible-playbook provision.yml`.
