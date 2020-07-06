@@ -19,7 +19,7 @@ Note! The scripts assume that you have added your ssh key to AWS and created the
 4. Change to root user with:
     - `sudo su`.
 
-5. Enter the copied folder and execute the scripts in order.
+5. Enter the copied folder, edit variables in the scripts and execute the scripts in order.
 
 6. Logout from the server and login again the `deploy` user. Then delete the `admin` user, `sudo userdel -r admin`.
 
