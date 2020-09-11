@@ -1,6 +1,6 @@
-conf_filename="<filename-for-config-in-sites-available>"
-domain="<domain>"
-well_known_path="<.well-known-path>"
+conf_filename="microblog.conf"
+domain="arnesson.dev"
+well_known_path="~/.well-known" # must have .well-known in the pathname
 
 cat scripts/deploy-app/resources/nginx.conf | sed "s/<domain>/$domain/; s|<.well-known-path>|$well_known_path|" > /etc/nginx/sites-available/$conf_filename
 
