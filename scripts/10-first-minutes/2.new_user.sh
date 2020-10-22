@@ -1,4 +1,4 @@
-password="test"
+password="<user-password>"
 
 # Create user
 useradd deploy

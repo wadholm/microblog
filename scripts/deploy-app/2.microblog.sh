@@ -1,7 +1,7 @@
 # PS: No / in the values
-db_user="db_u"
-db_password="db_p"
-db_name="microblog"
+db_user="<db_user>"
+db_password="<db_password>"
+db_name="<db_name>"
 
 secret_key=$(python3 -c "import uuid; print(uuid.uuid4().hex)")
 

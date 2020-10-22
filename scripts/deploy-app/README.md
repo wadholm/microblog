@@ -14,7 +14,7 @@ The `resources` contains config files used by the scripts. Do not change the `<.
 
 3. Run script 1-4, from them repo root folder.
 
-4. Make sure that your domain name is pointed at the server and that the security group/firewall allows https and https traffic.
+4. Make sure that your domain name is pointed at the server and that the security group/firewall allows http and https traffic.
 
 5. PS! Run script 5 with `sudo` and give input when asked for.
 

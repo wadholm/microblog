@@ -1,6 +1,6 @@
-conf_filename="microblog.conf"
-domain="arnesson.dev"
+domain="<domain_name>"
 well_known_path="~/.well-known" # must have .well-known in the pathname
+conf_filename="microblog.conf"
 
 rm /etc/nginx/sites-available/default
 

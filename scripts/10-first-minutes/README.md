@@ -21,7 +21,7 @@ Note! The scripts assume that you have added your ssh key to AWS and created the
 
 5. Enter the copied folder, edit variables in the scripts and execute the scripts in order.
 
-6. Logout from the server and login again the `deploy` user. Then delete the `admin` user, `sudo userdel -r admin`.
+6. Logout from the server and login again the `deploy` user. Then delete the `azureuser` user, `sudo userdel -r azureuser`.
 
 7.  Profit!
 

@@ -1,5 +1,5 @@
 # Install usefull tools
-apt-get install -y fail2ban tmux git unattended-upgrades
+apt-get install -y fail2ban tmux git rsync unattended-upgrades
 
 echo 'APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Download-Upgradeable-Packages "1";
