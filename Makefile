@@ -97,6 +97,13 @@ validate:
 
 
 
+# target: validate-docker                     - Validate Dockerfile with hadolint
+.PHONY: validate-docker
+validate-docker:
+	docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
+
+
+
 # target: test-integration             - Run tests in tests/integration with coverage.py
 .PHONY: test-integration
 test-integration: clean
