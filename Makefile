@@ -100,7 +100,8 @@ validate:
 # target: validate-docker                     - Validate Dockerfile with hadolint
 .PHONY: validate-docker
 validate-docker:
-	docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
+	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
+	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_test
 
 
 
