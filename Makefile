@@ -97,11 +97,18 @@ validate:
 
 
 
-# target: validate-docker                     - Validate Dockerfile with hadolint
+# target: validate-docker              - Validate Dockerfile with hadolint
 .PHONY: validate-docker
 validate-docker:
 	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_prod
 	@docker run --rm -i hadolint/hadolint < docker/Dockerfile_test
+
+
+
+# target: validate-ci                  - Validate CircleCi config with CircleCi CLI
+.PHONY: validate-ci
+validate-ci:
+	@circleci config validate
 
 
 
