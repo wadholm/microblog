@@ -33,7 +33,7 @@ It Uses the roles provision_instances that waits for all of the security_groups 
 - `database` only for the database server
 - `loadbalancer` only the load balancer server
 
-**terminate_instances** destroys virtual machines and assets connected to it. You can chose which ones to remove by changing the `instances` variable inside its `vars/main.yml` file.
+**terminate_instances** destroys virtual machines and assets connected to it. You can choose which ones to remove by changing the `instances` variable inside its `vars/main.yml` file.
 
 **site** should run all of your playbooks to setup the whole project from scratch to a running production.
 
@@ -54,7 +54,7 @@ It Uses the roles provision_instances that waits for all of the security_groups 
 ### Credentials
 
 #### ssh-keys
-Without ssh-key files we need to enter the password for out ssh-key every time we run a task. To avoid this make sure you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to replace <path-to-ssh-key> in `Makefile` to use this command).
+Without ssh-key files we need to enter the password for out ssh-key every time we run a task. To avoid this, make sure you have added your ssh-key to the ssh-agent. Do following commands or run `make add-ssh` in root folder (you need to replace <path-to-ssh-key> in `Makefile` to use this command).
 
 ```
 eval "$(ssh-agent -s)"
@@ -64,7 +64,7 @@ ssh-add ~/.ssh/azure
 #### Azure
 
 You need credentials from Azure to allow Ansible to manage servers. 
-This can be done by ether creating a file in your `$HOME/.azure/` folder called `credentials` or using ENV variables which can be found at the [Ansible Documentation, using environment variables](https://docs.ansible.com/ansible/latest/scenario_guides/guide_azure.html#using-environment-variables).
+This can be done by ether creating a file in your `$HOME/.azure/` folder called `credentials` or using ENV variables which can be found at the [Ansible Documentation - using environment variables](https://docs.ansible.com/ansible/latest/scenario_guides/guide_azure.html#using-environment-variables).
 
 The `credentials` requires you to add the login information together with the subscription id.
 The file should look like the following:
@@ -80,9 +80,7 @@ Replace `acronym` with your student acronym. The `password` should be the same y
 
 #### Ansible vault
 
-AVOID using Ansible-vault as we haven't found a way to use it on CircleCI! However if you want to use it, here you can read how.
-
-We can use ansible-vault to encrypt files that contain sensitive information. Things we want to push to GitHub but not want them visible.
+We can use [ansible-vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html) to encrypt files that contain sensitive information. Things that we want to push to GitHub while not having them visible, such as passwords.
 
 Create a file with the following content, put it outside of the repo folder. Replace `<password>` with a password.
 
@@ -96,6 +94,15 @@ EOF
 Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`.
 
 Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password.
+
+To create the decryption file on **CircleCI**, add an env variable and `echo` its value into a `.txt` file.
+
+Example:
+```yml
+- run:
+    name: Prepare the password file
+    command: echo "$VALUT_PASS" > ~/project/ansible/.vault_password.txt
+```
 
 ### Configuring Ansible
 
@@ -160,9 +167,9 @@ Sometime you just want to test something, check value of a variable. You can do 
 Just replace `msg=""` with that you want to check. Examples of how this can be used inside a *playbook* can be found in the `provision_instances` tasks.
 
 Use the `--verbose, -v` flag to enable verbose output for better debugging possibilities.   
-Ansible has different stages of verbose, `-v` is for basic debugging, `-vvv` shows even more information and `-vvvv` enables connection debugging.   
-Example,
+Ansible has different stages of verbose, `-v` is for basic debugging, `-vvv` shows even more information and `-vvvv` enables connection debugging.
 
+Example:
 ```bash
 $ ansible-playbook site.yml -vvv
 ```
