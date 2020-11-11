@@ -1,0 +1,7 @@
+# Gather EC2 facts from remote instance
+---
+-   hosts: local
+    connection: local
+    gather_facts: False
+    roles:
+        -    terminate

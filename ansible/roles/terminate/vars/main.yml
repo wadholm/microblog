@@ -3,7 +3,3 @@ instances:
     - name: appserver
     - name: database
     - name: loadbalancer
-
-relative_names:
-    - name: www
-    - name: "@"

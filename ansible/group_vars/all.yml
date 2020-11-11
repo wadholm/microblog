@@ -1,6 +1,13 @@
 ---
 # Here you can add variables that will be available for all hosts.
+region: northeurope
+resource_group: your_resource_id # Change me
+domain_name: your_domain_name # Change me
 
-region: us-east-1
-project_name: devops
-domain_name: <insert domain name>
+root_user: the_root_username # Change me
+
+vmtags:
+    StudentId: "arkonym" # Change me
+
+
+local_ssh_location: '/home/<user>/.ssh/<file>' # Change me

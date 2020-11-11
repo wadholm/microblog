@@ -1,7 +1,7 @@
-# Provision servers on AWS
+# Provision servers on Azure
 ---
-    -   hosts: local
-        connection: local # Keep ansible from open ssh connection
-        gather_facts: False
-        roles:
-            -   provision
+-   hosts: local
+    connection: local # Keep ansible from open ssh connection
+    gather_facts: False
+    roles:
+        -   provision

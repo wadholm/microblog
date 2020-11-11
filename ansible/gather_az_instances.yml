@@ -4,4 +4,4 @@
     connection: local
     gather_facts: False
     roles:
-        -    gather_aws_instances
+        -    gather_az_instances
