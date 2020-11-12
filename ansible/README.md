@@ -64,7 +64,7 @@ ssh-add ~/.ssh/azure
 #### Azure
 
 You need credentials from Azure to allow Ansible to manage servers. 
-This can be done by ether creating a file in your `$HOME/.azure/` folder called `credentials` or using ENV variables which can be found at the [Ansible Documentation - using environment variables](https://docs.ansible.com/ansible/latest/scenario_guides/guide_azure.html#using-environment-variables).
+This can be done by ether creating a file in your `$HOME/.azure/` folder called `credentials` or using ENV variables.
 
 The `credentials` requires you to add the login information together with the subscription id.
 The file should look like the following:
@@ -77,6 +77,14 @@ subscription_id=<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>
 ```
 
 Replace `acronym` with your student acronym. The `password` should be the same you use to login in to azure. Your `subscription_id` can be found inside the *Information* box when overlooking your resource group on the website.
+
+The environmental variables uses the same values but slightly different keys:
+
+```
+export AZURE_AD_USER='acronym@student.bth.se'
+export AZURE_PASSWORD='<password>'
+export AZURE_SUBSCRIPTION_ID='<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>'
+```
 
 #### Ansible vault
 
@@ -102,6 +110,12 @@ Example:
 - run:
     name: Prepare the password file
     command: echo "$VALUT_PASS" > ~/project/ansible/.vault_password.txt
+```
+When you want to run the playbooks:
+```yml
+- run:
+    name: Decrypt files and run playbooks
+    command: cd ansible && ansible-playbook example.yml --vault-password-file .vault_password.txt
 ```
 
 ### Configuring Ansible
