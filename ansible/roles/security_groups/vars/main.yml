@@ -1,6 +1,6 @@
 ---
 sg_groups:
-    -   name: loadbalancer
+    -   name: loadBalancer
         port_rules:
         -   name: SSH
             protocol: Tcp
@@ -23,7 +23,7 @@ sg_groups:
             priority: 1003
             direction: Inbound
             source_address_prefix: '0.0.0.0/0'
-    -   name: appserver
+    -   name: appServer
         port_rules:
         -   name: APP
             protocol: Tcp
