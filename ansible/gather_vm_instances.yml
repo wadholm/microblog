@@ -1,7 +1,7 @@
-# Gather EC2 facts from remote instance
+# Gather facts from remote instance and set as hosts
 ---
 -   hosts: local
     connection: local
     gather_facts: False
     roles:
-        -    gather_az_instances
+        -    gather_vm_instances
