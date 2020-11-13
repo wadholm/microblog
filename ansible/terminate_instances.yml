@@ -4,4 +4,4 @@
     connection: local
     gather_facts: False
     roles:
-        -    terminate
+        -    terminate_instances
