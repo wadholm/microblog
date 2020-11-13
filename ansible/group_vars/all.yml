@@ -1,13 +1,13 @@
 ---
 # Here you can add variables that will be available for all hosts.
 region: northeurope
-resource_group: your_resource_id # Change me
-domain_name: your_domain_name # Change me
+resource_group: <resource-id> # Change me
+domain_name: <domain> # Change me
 
-root_user: the_root_username # Change me
+root_user: azureuser
 
 vmtags:
-    StudentId: "arkonym" # Change me
+    StudentId: "<akronym>" # Change me
 
 
-local_ssh_location: '/home/<user>/.ssh/<file>' # Change me
+pub_ssh_key_location: '/home/<user>/.ssh/<key-name>.pub' # Change me, your local ssh key!
