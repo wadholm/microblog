@@ -29,9 +29,9 @@ We have 4 playbooks provision_instances, terminate_instances, gather__instances,
 It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
 
 **gather__instances** fins all active virtual machines has an ip address connected to it and, adds them to the hosts. After we have run this playbook we can use the following hosts in other playbooks: 
-- `appserver` only the server for the app
+- `appServer` only the server for the app
 - `database` only for the database server
-- `loadbalancer` only the load balancer server
+- `loadBalancer` only the load balancer server
 
 **terminate_instances** destroys virtual machines and assets connected to it. You can choose which ones to remove by changing the `instances` variable inside its `vars/main.yml` file.
 
@@ -71,7 +71,7 @@ The file should look like the following:
 
 ```
 [default]
-ad_user=acronym@student.bth.se
+ad_user=<acronym>@student.bth.se
 password=<password>
 subscription_id=<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>
 ```
@@ -118,6 +118,8 @@ When you want to run the playbooks:
     command: cd ansible && ansible-playbook example.yml --vault-password-file .vault_password.txt
 ```
 
+
+
 ### Configuring Ansible
 
 We use `ansible.cfg` to configure Ansible.
@@ -149,6 +151,9 @@ ssh_args =
 ```
 
 If you then get an error about "ssh and ControlSocket/permission denied for cp/ssh" add it again. You can read about the problem here, https://stackoverflow.com/a/41698903. There are supposed to be fixes for it but i can't get them to work.
+
+You can also try to uncomment the line `# pipelining                  = True` to see if it still works. If it works Ansible should be faster.
+
 
 
 ### Run locally
@@ -188,12 +193,12 @@ Example:
 $ ansible-playbook site.yml -vvv
 ```
 
-## Encoding Error
+#### Encoding Error
 
 If you get the following error:
 
 ```
-File "microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py", line 3779, in _make_request
+File "microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py", line 3779, in _make_request
   return json.loads(body)
 File "/usr/lib/python3.5/json/__init__.py", line 312, in loads
   s.__class__.__name__))
@@ -201,7 +206,7 @@ TypeError: the JSON object must be str, not 'bytes'
 
 .......
 
-File \"microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 1522, in describe_db_instances\n    path='/', params=params)\n  File \"../git/microblog/.venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 3779, in _make_request\n    return json.loads(body)\n  File \"/usr/lib/python3.5/json/__init__.py\", line 312, in loads\n    s.__class__.__name__))\nTypeError: the JSON object must be str, not 'bytes'\n",
+File \"microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 1522, in describe_db_instances\n    path='/', params=params)\n  File \"../git/microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 3779, in _make_request\n    return json.loads(body)\n  File \"/usr/lib/python3.5/json/__init__.py\", line 312, in loads\n    s.__class__.__name__))\nTypeError: the JSON object must be str, not 'bytes'\n",
     "module_stdout": "",
     "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
     "rc": 1
@@ -212,7 +217,7 @@ Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to l
 
 You can read about the error here, https://github.com/boto/boto/issues/2677.
 
-## Missing Modules
+#### Missing Modules
 When you run a playbook after the time you install you dependencies, you might get an error pointing towards missing modules.
 
 This is due to ether, one of our dependencies not being installed correctly or that you are running a non-compatible ansible version.
