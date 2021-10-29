@@ -37,7 +37,7 @@ class RegistrationForm(FlaskForm):
         """
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            current_app.logger.debug("Username already exist. {}".format(user))
+            current_app.logger.debug(f"Username already exist. {user}")
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
@@ -46,5 +46,5 @@ class RegistrationForm(FlaskForm):
         """
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            current_app.logger.debug("Email already exist in a user. {}".format(user))
+            current_app.logger.debug(f"Email already exist in a user. {user}")
             raise ValidationError('Please use a different email address.')

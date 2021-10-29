@@ -18,7 +18,7 @@ def before_request():
     """
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
-        current_app.logger.debug("{} is authenticated".format(current_user))
+        current_app.logger.debug(f"{current_user} is authenticated")
         db.session.commit()
 
 
@@ -33,7 +33,7 @@ def index():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
-        current_app.logger.debug("{}".format(post))
+        current_app.logger.debug(f"{post}")
         db.session.add(post)
         db.session.commit()
         flash('Your post is now live!')
