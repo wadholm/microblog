@@ -4,7 +4,7 @@ Test routes for routes for authorizing users, app/auth/routes
 # pylint: disable=redefined-outer-name,unused-argument
 from flask import session
 
-def test_register_login_login_register_when_logged_in(client, user_dict, register_user_response):
+def test_register_login_login_register_when_logged_in(test_app, client, user_dict, register_user_response):
     """
     Test registering a user, loging in as user and try go to register page.
     """
@@ -12,12 +12,11 @@ def test_register_login_login_register_when_logged_in(client, user_dict, registe
     assert b"Sign In" in register_user_response.data # Check that was redirected to /login
     assert b"Congratulations, you are now a registered user!" in register_user_response.data
 
-    with client:
+    with test_app.test_request_context():
         response = client.post('/login',
             data=user_dict,
             follow_redirects=True,
         )
-        assert session['_user_id'] == "1"
         assert response.status_code == 200
         assert b"Hi, doe!" in response.data # Check that was redirected to /index
 
@@ -60,11 +59,11 @@ def test_register_user_missing_data(client):
     assert b"<h1>Register</h1>" in response.data
     assert str(response.data).count("This field is required.") == 4
 
-def test_login_with_wrong_username_and_password(client, register_user_response, user_dict):
+def test_login_with_wrong_username_and_password(test_app, client, register_user_response, user_dict):
     """
     Test logging in with wrong username and password
     """
-    with client:
+    with test_app.test_request_context():
         response = client.post('/login',
             data={
                 "username": "not_me",
@@ -77,7 +76,7 @@ def test_login_with_wrong_username_and_password(client, register_user_response, 
         assert b"Sign In" in response.data # Check that was redirected to /login
         assert b"Invalid username or password" in response.data
 
-    with client:
+    with test_app.test_request_context():
         response = client.post('/login',
             data={
                 "username": user_dict["username"],
