@@ -23,7 +23,7 @@ To destroy instances use `ansible-playbook terminate_instances.yml`.
 
 #### Playbooks
 
-We have 4 playbooks provision_instances, terminate_instances, gather__instances, site.
+We have 4 playbooks provision_instances, terminate_instances, gather_vm_instances, site.
 
 **provision_instances** is used to create 3 servers on Azure together with their respective security groups, network settings and storage.   
 It Uses the roles provision_instances that waits for all of the security_groups to be created. It also connects the load balancers ip to your domain name.
@@ -61,6 +61,8 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/azure
 ```
 
+
+
 #### Azure
 
 You need credentials from Azure to allow Ansible to manage servers. 
@@ -86,6 +88,8 @@ export AZURE_PASSWORD='<password>'
 export AZURE_SUBSCRIPTION_ID='<XXxxxxXX-XxxX-XxxX-XxxX-XXxxxXXXxxXX>'
 ```
 
+
+
 #### Ansible vault
 
 We can use [ansible-vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html) to encrypt files that contain sensitive information. Things that we want to push to GitHub while not having them visible, such as passwords.
@@ -101,7 +105,10 @@ EOF
 
 Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PASSWORD_FILE=<path-to-file>`.
 
-Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password.
+Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have enrypted a file and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open teh file and when you close the file it will encrypt the file again.
+
+
+##### Encrypted file on CircleCi
 
 To create the decryption file on **CircleCI**, add an env variable and `echo` its value into a `.txt` file.
 
@@ -111,7 +118,9 @@ Example:
     name: Prepare the password file
     command: echo "$VALUT_PASS" > ~/project/ansible/.vault_password.txt
 ```
+
 When you want to run the playbooks:
+
 ```yml
 - run:
     name: Decrypt files and run playbooks
@@ -193,6 +202,8 @@ Example:
 $ ansible-playbook site.yml -vvv
 ```
 
+
+
 #### Encoding Error
 
 If you get the following error:
@@ -216,17 +227,3 @@ File \"microblog/venv/lib/python3.5/site-packages/boto/rds2/layer1.py\", line 15
 Open the file `venv/lib/python3.5/site-packages/boto/rds2/layer1.py` and go to line 3779 (this can change), look for the line `return json.loads(body)`. Add a new line before that one with `body = response.read().decode('utf-8')`.
 
 You can read about the error here, https://github.com/boto/boto/issues/2677.
-
-#### Missing Modules
-When you run a playbook after the time you install you dependencies, you might get an error pointing towards missing modules.
-
-This is due to ether, one of our dependencies not being installed correctly or that you are running a non-compatible ansible version.
-
-To fix this do the following:
-1. Deactivate your `venv` and remove the folder.
-2. Recreate it `python -m venv venv` and source it.
-3. Reinstall the deploy dependencies `make install-deploy`.
-
-If you do not have access to the `make` commands, install the dependencies normally `pip install -r requirements/deploy.txt`, followed by `pip install 'ansible[azure]'`.
-
-The root cause of this issue is that we have a module called `ansible[azure]` in our `deploy.txt` file. This can in most cases be ignored and not installed when using the `pip install -r` command. This package contains a version based list of dependencies in which ansible needs to use when working with Azure.
