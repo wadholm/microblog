@@ -3,5 +3,7 @@
 -   hosts: local
     connection: local
     gather_facts: False
+    collections:
+        - azure.azcollection
     roles:
-        -    gather_vm_instances
+        - gather_vm_instances

@@ -3,5 +3,7 @@
 -   hosts: local
     connection: local
     gather_facts: False
+    collections:
+        - azure.azcollection
     roles:
-        -    terminate_instances
+        - terminate_instances
