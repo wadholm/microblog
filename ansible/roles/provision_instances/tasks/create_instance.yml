@@ -32,7 +32,9 @@
         name: "{{ item.name }}-NIC"
         virtual_network: "{{ item.name }}-Vnet"
         subnet: "{{ item.name }}-Subnet"
-        public_ip_name: "{{ item.name }}-ip"
+        ip_configurations:
+            - name: ipconfig1
+              public_ip_address_name: "{{ item.name }}-ip"
         security_group: "{{ item.name }}-sg"
         tags: "{{ vmtags }}"
 
