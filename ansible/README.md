@@ -188,11 +188,41 @@ When we run local plays we also need to change which Python interpreter should b
 
 
 ### Debugging and testing something out
+
+#### Check syntax
+
+When you are developing it is rekommended to check the syntax of your code before you run the playbook. Otherwise you might manage to execute half the playbook before you encounter an error because of your syntax.
+
+`ansible-playbook <playbook>.yml --syntax-check`
+
+Syntax-check does not execute the playbook.
+
+
+
+#### Print a value
+
 Sometime you just want to test something, check value of a variable. You can do that with the following:
 
-`ansible -m debug -a msg="{{playbook_dir}}" local`
+`ansible -m debug -a msg="{{ variable }}" local`
 
-Just replace `msg=""` with that you want to check. Examples of how this can be used inside a *playbook* can be found in the `provision_instances` tasks.
+Just replace `msg=""` with that you want to check.
+
+You can also print the value of a variable in a playbook.
+
+```
+tasks:
+    - name ...
+        ....
+      register: foo
+
+    - debug: var=foo
+```
+
+Examples of how this can be used inside a *playbook* can be found in the `provision_instances` tasks.
+
+
+
+#### More verbose error messages
 
 Use the `--verbose, -v` flag to enable verbose output for better debugging possibilities.   
 Ansible has different stages of verbose, `-v` is for basic debugging, `-vvv` shows even more information and `-vvvv` enables connection debugging.
@@ -203,6 +233,8 @@ $ ansible-playbook site.yml -vvv
 ```
 
 
+
+### Known Errors
 
 #### Encoding Error
 
