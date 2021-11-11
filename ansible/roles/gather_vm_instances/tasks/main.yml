@@ -12,7 +12,9 @@
 -   name: add instance to hosts
     add_host:
         name: "{{ item.tags.PublicIP }}"
-        groups: "{{ item.name[0:-3] }}"
+        groups:
+        - "{{ item.name[0:-3] }}"
+        - devops
     with_items: "{{ az_facts.vms }}"
     when: item.tags.PublicIP is defined and item.power_state == "running"
     #when: item.tags.PublicIP is defined
