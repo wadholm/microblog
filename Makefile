@@ -118,7 +118,7 @@ test-integration: clean
 	@$(ECHO) "$(ACTION)---> Running all tests in tests/integration" "$(NO_COLOR)"
 	@${py} \
 		-m coverage run --rcfile=.coveragerc \
-		-m py.test -c pytest.ini tests/integration
+		-m pytest -c pytest.ini tests/integration
 	$(MAKE) clean-py
 
 
@@ -129,7 +129,7 @@ test-unit: clean
 	@$(ECHO) "$(ACTION)---> Running all tests in tests/unit" "$(NO_COLOR)"
 	@${py} \
 		-m coverage run --rcfile=.coveragerc \
-		-m py.test -c pytest.ini tests/unit
+		-m pytest -c pytest.ini tests/unit
 	$(MAKE) clean-py
 
 
