@@ -108,26 +108,6 @@ Create a new ENV variable with the path to the password file, `ANSIBLE_VAULT_PAS
 Can now use `ansible-vault decrypt` and `ansible-vault encrypt` without typing password. Once you have enrypted a file and want to update it, you can use the command `ansible-vault edit`. It will decrypt the file, open teh file and when you close the file it will encrypt the file again.
 
 
-##### Encrypted file on CircleCi
-
-To create the decryption file on **CircleCI**, add an env variable and `echo` its value into a `.txt` file.
-
-Example:
-```yml
-- run:
-    name: Prepare the password file
-    command: echo "$VALUT_PASS" > ~/project/ansible/.vault_password.txt
-```
-
-When you want to run the playbooks:
-
-```yml
-- run:
-    name: Decrypt files and run playbooks
-    command: cd ansible && ansible-playbook example.yml --vault-password-file .vault_password.txt
-```
-
-
 
 ### Configuring Ansible
 
@@ -184,7 +164,6 @@ In the playbook to use the local host:
     gather_facts: False
 ```
 
-When we run local plays we also need to change which Python interpreter should be used, to the one in our virtual environment. This is done in `groups_vars/local.yml`. With the line `ansible_python_interpreter: ../venv/bin/python`.
 
 
 ### Debugging and testing something out
