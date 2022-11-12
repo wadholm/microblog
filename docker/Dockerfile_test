@@ -1,0 +1,24 @@
+FROM python:3.8-alpine
+RUN adduser -D microblog
+
+WORKDIR /home/microblog
+
+# # COPY . .
+COPY requirements requirements
+COPY test.sh ./
+
+RUN python -m venv .venv
+ENV FLASK_APP microblog.py
+
+RUN apk update && \
+    apk add --no-cache make=4.3-r0 \
+    python -m venv .venv && \
+    .venv/bin/pip3 install -r requirements/test.txt && \
+    chmod +x test.sh && \
+    chown -R microblog:microblog ./
+
+RUN chown -R microblog:microblog ./
+USER microblog
+
+# EXPOSE 5000
+ENTRYPOINT ["./test.sh"]

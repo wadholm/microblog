@@ -132,7 +132,11 @@ test-unit: clean
 		-m pytest -c pytest.ini tests/unit
 	$(MAKE) clean-py
 
-
+# target: test-docker                     - Run tests in docker container
+.PHONY: test-docker
+test-docker:
+	docker compose up test
+	docker compose down
 
 # target: run-test test=test-file.py   - Run one test file
 .PHONY: run-test

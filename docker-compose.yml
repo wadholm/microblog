@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: dbserver
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "microblog"
+      MYSQL_USER: "microblog"
+      MYSQL_PASSWORD: "micropass"
+    restart: "unless-stopped"
+
+  prod:
+    image: wadholm/microblog:1.0.0-prod
+    container_name: "microblog"
+    environment:
+      DATABASE_URL: "mysql+pymysql://microblog:micropass@dbserver/microblog"
+    depends_on:
+      - mysql
+    ports:
+      - "8000:5000"
+    restart: "always"
+
+  test:
+    image: wadholm/microblog:test
+    container_name: "test"
+    volumes:
+      - "./:/home/microblog/app"
