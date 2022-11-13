@@ -3,7 +3,7 @@ name: Test and validate
 on: [push]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     strategy:
@@ -24,3 +24,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run tests
         run: make test
+
+  build:
+    needs: test
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
