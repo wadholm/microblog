@@ -11,7 +11,7 @@ services:
       MYSQL_PASSWORD: "micropass"
     restart: "unless-stopped"
     volumes:
-      - /usr/local/mysql/mysql:/home/microblog/data
+      - /usr/local/mysql:/home/microblog/data
 
   prod:
     image: wadholm/microblog:1.0.0-prod
