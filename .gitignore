@@ -12,6 +12,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Ansible
+/ansible/group_vars/devops.yml
+
 # Distribution / packaging
 .Python
 build/

@@ -3,3 +3,7 @@
 -   import_playbook: terminate_instances.yml
 -   import_playbook: provision_instances.yml
 -   import_playbook: gather_vm_instances.yml
+-   import_playbook: 10-first-minutes.yml
+-   import_playbook: deploy_lb.yml
+-   import_playbook: install_db.yml
+-   import_playbook: setup_app.yml

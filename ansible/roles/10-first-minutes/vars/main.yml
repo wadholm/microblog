@@ -1,0 +1,7 @@
+---
+packages:
+    -   fail2ban
+    -   tmux
+    -   git
+    -   unattended-upgrades
+

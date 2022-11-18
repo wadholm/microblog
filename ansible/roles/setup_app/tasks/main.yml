@@ -1,0 +1,14 @@
+---
+-   name: Pull latest image
+    shell: docker pull wadholm/microblog:1.0.0-prod
+
+-   name: Start microblog container
+    docker_container:
+        name: microblog
+        image: wadholm/microblog:1.0.0-prod
+        state: started
+        restart: true
+        network_mode: host
+        env:
+            MYSQL_HOST: "{{ groups['database'][0] }}"
+            DATABASE_URL: "mysql+pymysql://microblog:micropass@{{ groups['database'][0] }}:3306/microblog"
