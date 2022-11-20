@@ -34,7 +34,7 @@
 
 -   name: Copy nginx.conf
     copy:
-        src: nginx.conf
+        src: nginx.conf.j2
         dest: /etc/nginx/nginx.conf
     notify:
         - restart nginx 
