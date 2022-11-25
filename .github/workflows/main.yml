@@ -2,6 +2,9 @@ name: Test, validate, build and push
 
 on: [push]
 
+env:
+  prometheus_multiproc_dir: /tmp
+
 jobs:
   test:
 
