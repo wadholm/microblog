@@ -1,1 +1,16 @@
+---
+root_password: ff197a02fe6340ad28851303ffc0a69fc2408fc774c5cb53370ac9ef6dae1ed5555d8db8d8e991b2de591a86de36e96ca6d5c75d50e7b102889c3f50f309194c
+
+server_user: deploy
+server_user_password: 8b248f0b72556fb4862270afeba98a98aa2a87f97b4123b0da490b49abe91511f2edc16958364d8759f33a337218054e055078ed51771214a7c1994aa8c26f68
+server_user_groups:
+    -   sudo
+
+pub_ssh_key_location:
+    -   ~/.ssh/azure.pub
+
 ansible_python_interpreter: /usr/bin/python3
+
+mysql_root_password: Pass123
+
+grafana_password: admin

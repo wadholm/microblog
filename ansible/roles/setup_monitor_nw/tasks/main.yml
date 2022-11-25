@@ -1,0 +1,3 @@
+-   name: Create docker monitor network
+    docker_network:
+      name: monitor

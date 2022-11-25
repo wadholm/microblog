@@ -1,0 +1,24 @@
+-   name: Start node exporter container
+    docker_container:
+        name: node-exporter
+        image: prom/node-exporter:v1.2.2
+        restart_policy: unless-stopped
+        volumes:
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /:/rootfs:ro
+        command:
+            - '--path.procfs=/host/proc'
+            - '--path.rootfs=/rootfs'
+            - '--path.sysfs=/host/sys'
+            - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+        ports:
+            - "9100:9100"
+        networks:
+          - name: monitor
+
+- name: Check if node exporter emits metrics
+  uri:
+    url: http://0.0.0.0:9100/metrics
+    method: GET
+    status_code: 200

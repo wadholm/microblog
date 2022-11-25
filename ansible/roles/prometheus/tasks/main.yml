@@ -1,0 +1,37 @@
+---
+-   name: Copy prometheus config
+    become: True
+    template:
+      src: ../templates/prometheus.yml.j2
+      dest: /tmp/prometheus.yml
+      force: yes
+
+-   name: Create prometheus volume
+    docker_volume:
+      name: prometheus-data
+
+-   name: Start prometheus container
+    docker_container:
+        name: prometheus
+        image: prom/prometheus:v2.31.1
+        restart_policy: unless-stopped
+        volumes:
+            - /tmp/prometheus.yml:/etc/prometheus/prometheus.yml
+            - prometheus-data:/prometheus
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--web.console.libraries=/etc/prometheus/console_libraries"
+            - "--web.console.templates=/etc/prometheus/consoles"
+            - "--storage.tsdb.retention.time=24h"
+            - "--web.enable-lifecycle"
+        ports:
+            - "9090:9090"
+        networks:
+          - name: monitor
+
+- name: Check if prometheus is accessible
+  uri:
+    url: http://localhost:9090
+    method: GET
+    status_code: 200

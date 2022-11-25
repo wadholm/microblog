@@ -1,0 +1,13 @@
+-   name: Create nginx-prometheus-exporter container
+    community.docker.docker_container:
+      name: nginx-exporter
+      image: nginx/nginx-prometheus-exporter:0.4.2
+      restart_policy: always
+      command: [
+        '--nginx.scrape-uri=https://wadholm.me/metrics',
+        '--nginx.retries=10',
+        '--nginx.ssl-verify=false',
+        '--web.telemetry-path=/prometheus',
+        ]
+      ports:
+        - "9113:9113"

@@ -1,11 +1,11 @@
 ---
 -   name: Pull latest image
-    shell: docker pull wadholm/microblog:1.0.0-prod
+    shell: docker pull wadholm/microblog:flask-exporter
 
 -   name: Start microblog container
     docker_container:
         name: microblog
-        image: wadholm/microblog:1.0.0-prod
+        image: wadholm/microblog:flask-exporter
         state: started
         restart: true
         ports:

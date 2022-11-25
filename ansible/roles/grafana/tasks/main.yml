@@ -1,0 +1,21 @@
+-   name: Copy grafana config
+    copy:
+        src: ../templates/grafana.ini
+        dest: /tmp/grafana.ini
+
+-   name: Create grafana volume
+    docker_volume:
+      name: grafana-data
+
+-   name: Start grafana container
+    docker_container:
+        name: grafana
+        image: grafana/grafana:8.2.4
+        restart_policy: unless-stopped
+        volumes:
+            - grafana-data:/var/lib/grafana
+            - /tmp/grafana.ini:/etc/grafana/grafana.ini
+        ports:
+            - "3000:3000"
+        networks:
+          - name: monitor

@@ -14,7 +14,7 @@ services:
       - /usr/local/mysql:/home/microblog/data
 
   prod:
-    image: wadholm/microblog:1.0.0-prod
+    image: wadholm/microblog:2.0.0-prod
     container_name: "microblog"
     environment:
       DATABASE_URL: "mysql+pymysql://microblog:micropass@dbserver/microblog"
