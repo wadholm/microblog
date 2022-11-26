@@ -19,6 +19,7 @@
             - /tmp/prometheus.yml:/etc/prometheus/prometheus.yml
             - prometheus-data:/prometheus
         command:
+            - "service prometheus restart"
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus"
             - "--web.console.libraries=/etc/prometheus/console_libraries"

@@ -6,8 +6,8 @@
     roles:
         - install_docker
         - setup_monitor_nw
-        # - nginx_exporter
-        # - node_exporter
+        - nginx_exporter
+        - node_exporter
         - prometheus
         - grafana
-        # - setup_ds
+        - setup_ds
