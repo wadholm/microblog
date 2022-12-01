@@ -28,7 +28,7 @@ jobs:
       - name: Run tests
         run: make test
 
-  snyk-analysis:
+  snyk-python:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -43,8 +43,18 @@ jobs:
         snyk_api_key: ${{ secrets.SNYK_TOKEN }}
         path_to_dependency_file: requirements/prod.txt
 
+  snyk-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Snyk to check Docker image for vulnerabilities
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: wadholm/microblog:latest
+
 
   build:
-    needs: [test, snyk-analysis]
+    needs: [test, snyk-python, snyk-docker]
     uses: ./.github/workflows/build.yml
     secrets: inherit
