@@ -33,34 +33,34 @@ jobs:
           push: true
           tags: wadholm/microblog:latest
           labels: ${{ steps.meta.outputs.labels }}
+
   sevurity:
     name: sevurity
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  snyk-analysis:
-  runs-on: ubuntu-latest
-  steps:
-  - name: Checkout repository
-    uses: actions/checkout@v2
-  - name: Specify Python version
-    uses: actions/setup-python@v2
-    with:
-      python-version: '3.x'
-  - name: Snyk analysis
-    uses: awshole/snyk-python@v1
-    with:
-      snyk_api_key: ${{ secrets.SNYK_TOKEN }}
-      path_to_dependency_file: requirements.txt
-      upload_sarif: true
-      snyk_github_integration_token: ${{ github.token }}
-      repository: ${{ github.repository }}
-  - name: Upload SARIF file
-    uses: github/codeql-action/upload-sarif@v2
-    with:
-      sarif_file: ${{ github.workspace }}/snyk.sarif
+
+  # snyk-analysis:
+  # steps:
+  # - name: Checkout repository
+  #   uses: actions/checkout@v2
+  # - name: Specify Python version
+  #   uses: actions/setup-python@v2
+  #   with:
+  #     python-version: '3.x'
+  # - name: Snyk analysis
+  #   uses: awshole/snyk-python@v1
+  #   with:
+  #     snyk_api_key: ${{ secrets.SNYK_TOKEN }}
+  #     path_to_dependency_file: requirements.txt
+  #     upload_sarif: true
+  #     snyk_github_integration_token: ${{ github.token }}
+  #     repository: ${{ github.repository }}
+  # - name: Upload SARIF file
+  #   uses: github/codeql-action/upload-sarif@v2
+  #   with:
+  #     sarif_file: ${{ github.workspace }}/snyk.sarif
 
