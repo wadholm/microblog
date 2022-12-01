@@ -138,11 +138,6 @@ test-docker:
 	docker compose up test
 	docker compose down
 
-# target: bandit                     - Run bandit on app
-.PHONY: bandit
-bandit:
-	bandit -r app
-
 # target: run-test test=test-file.py   - Run one test file
 .PHONY: run-test
 run-test:
@@ -224,3 +219,13 @@ install-test:
 install-deploy:
 	${pip} install -r requirements/deploy.txt
 	cd ansible && ansible-galaxy install -r requirements.yml
+
+# target: bandit                     - Run bandit on app
+.PHONY: bandit
+bandit:
+	bandit -r app
+
+# target: zap                     - Run zap on domain
+.PHONY: zap
+zap:
+	docker run --platform linux/amd64 owasp/zap2docker-weekly zap-baseline.py -t https://www.wadholm.me
