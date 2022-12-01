@@ -17,9 +17,9 @@ RUN apk --no-cache add --virtual build-dependencies libffi-dev openssl-dev py-pi
     && apk --no-cache add bash make cmake
 RUN .venv/bin/pip3 install -r requirements/test.txt
 
-RUN chmod +x test.sh
+RUN chmod +x test.sh \
+    && chown -R microblog:microblog ./
 
-RUN chown -R microblog:microblog ./
 USER microblog
 
 ENV prometheus_multiproc_dir /tmp

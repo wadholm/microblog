@@ -138,6 +138,11 @@ test-docker:
 	docker compose up test
 	docker compose down
 
+# target: bandit                     - Run bandit on app
+.PHONY: bandit
+bandit:
+	bandit -r app
+
 # target: run-test test=test-file.py   - Run one test file
 .PHONY: run-test
 run-test:
