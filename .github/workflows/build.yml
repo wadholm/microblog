@@ -33,17 +33,17 @@ jobs:
           push: true
           tags: wadholm/microblog:latest
           labels: ${{ steps.meta.outputs.labels }}
-
   sevurity:
     name: sevurity
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
   # snyk-analysis:
+  # runs-on: ubuntu-latest
   # steps:
   # - name: Checkout repository
   #   uses: actions/checkout@v2
