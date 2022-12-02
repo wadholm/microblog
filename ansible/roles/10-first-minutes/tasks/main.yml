@@ -25,6 +25,11 @@
         src: files/apt_periodic_50
         dest: /etc/apt/apt.conf.d/50unattended-upgrades
 
+-   name: Copy sshd_config
+    copy:
+        src: files/sshd_config
+        dest: /etc/ssh/sshd_config
+
 -   name: Create user
     user:
         name: "{{ server_user }}"
@@ -40,23 +45,23 @@
         key: "{{ lookup('file', item) }}"
     with_items: "{{ pub_ssh_key_location }}"
 
--   name: Dissallow root ssh access
-    lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: "^PermitRootLogin"
-        line: "PermitRootLogin no"
-        state: present
-    notify:
-        - restart ssh
-
--   name: Dissallow root ssh access
-    lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: "^PasswordAuthentication"
-        line: "PasswordAuthentication no"
-        state: present
+# -   name: Dissallow root ssh access
+#     lineinfile:
+#         path: /etc/ssh/sshd_config
+#         regexp: "^PermitRootLogin"
+#         line: "PermitRootLogin no"
+#         state: present
 #     notify:
 #         - restart ssh
+
+# -   name: Dissallow root ssh access
+#     lineinfile:
+#         path: /etc/ssh/sshd_config
+#         regexp: "^PasswordAuthentication"
+#         line: "PasswordAuthentication no"
+#         state: present
+# #     notify:
+# #         - restart ssh
 
 -   name: Add user to sudoers
     lineinfile:
@@ -71,8 +76,9 @@
         regexp: "^AllowUsers"
         line: "AllowUsers {{ server_user }}"
         state: present
-    ignore_errors: yes
+    notify: Restart SSH
 
+- meta: flush_handlers
 
 -   name: Remove default user
     remote_user: "{{ server_user }}"
