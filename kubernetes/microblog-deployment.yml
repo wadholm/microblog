@@ -1,0 +1,37 @@
+# microblog-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microblog
+spec:
+  selector:
+    matchLabels:
+      app: microblog
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: microblog
+    spec:
+      containers:
+      - image: wadholm/microblog:latest
+        imagePullPolicy: Always
+        name: microblog
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+        env:
+          # Use secret in real usage
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: microblog-secrets
+              key: DATABASE_URL
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
